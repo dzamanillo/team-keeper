@@ -5,6 +5,7 @@ const Intern = require("./lib/Intern");
 const htmlBuilder = require("./src/htmlBuilder");
 const fs = require("fs");
 const path = require("path");
+const copyFile = require("./src/copyWriteStyle");
 
 const employees = [];
 
@@ -212,4 +213,4 @@ const employeeQuestions = () => {
 		});
 };
 
-managerQuestions().then(employeeQuestions);
+managerQuestions().then(employeeQuestions).then(copyFile);
