@@ -1,0 +1,14 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+.bg-lightGrey {
+	background-color: #f6f7f9;
+}
+
+.employee-title {
+	font-size: 1.5rem;
+}
