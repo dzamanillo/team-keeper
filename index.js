@@ -1,4 +1,10 @@
 const inquirer = require("inquirer");
+const Engineer = require("./lib/Engineer");
+const Manager = require("./lib/Manager");
+const Intern = require("./lib/Intern");
+const htmlBuilder = require("./lib/htmlBuilder");
+const fs = require("fs");
+const path = require("path");
 
 const employees = [];
 
@@ -59,12 +65,17 @@ const managerQuestions = (managerData) => {
 			},
 		])
 		.then((data) => {
-			employees.push(data);
-			return managerData;
+			const manager = new Manager(
+				data.managerName,
+				data.managerId,
+				data.managerEmail,
+				data.managerOfficeNumber
+			);
+			employees.push(manager);
 		});
 };
 
-const employeeQuestions = (employeeData) => {
+const employeeQuestions = () => {
 	return inquirer
 		.prompt([
 			{
@@ -172,17 +183,33 @@ const employeeQuestions = (employeeData) => {
 			},
 		])
 		.then((employeeInfo) => {
-			employees.push(employeeInfo);
-			if (employeeInfo.employeeSelect !== "None") {
-				return employeeQuestions(employeeData);
+			if (employeeInfo.employeeSelect === "Engineer") {
+				const engineer = new Engineer(
+					employeeInfo.employeeName,
+					employeeInfo.employeeId,
+					employeeInfo.employeeEmail,
+					employeeInfo.engineerGit
+				);
+
+				employees.push(engineer);
+				return employeeQuestions();
+			} else if (employeeInfo.employeeSelect === "Intern") {
+				const intern = new Intern(
+					employeeInfo.employeeName,
+					employeeInfo.employeeId,
+					employeeInfo.employeeEmail,
+					employeeInfo.internSchool
+				);
+
+				employees.push(intern);
+				return employeeQuestions();
 			} else {
-				return employeeData;
+				if (!fs.existsSync(path.join(__dirname, "dist"))) {
+					fs.mkdirSync(path.join(__dirname, "dist"));
+				}
+				fs.writeFileSync("./dist/index.html", htmlBuilder(employees));
 			}
 		});
 };
 
-managerQuestions()
-	.then(employeeQuestions)
-	.then(() => {
-		console.log(employees);
-	});
+managerQuestions().then(employeeQuestions);
