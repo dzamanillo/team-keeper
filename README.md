@@ -4,7 +4,9 @@
 
 ## Description
 
-Team Keeper is a command line application that allow a user to input information about employees to create a HTML page.
+Team Keeper is a command line application that allow a user to input information about employees to create a HTML page. See a sample in /dist.
+
+![Team Keeper](assets/screenShot.png)
 
 ## Table of Contents
 
